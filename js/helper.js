@@ -11,7 +11,12 @@ var helper = {
 
         if (typeof attributes == 'object') {
             for (i in attributes) {
-                el.setAttribute(i, attributes[i]);
+                if( i.toLowerCase() == 'text') {
+                    el.innerHTML = attributes.text;
+                }else {
+                    el.setAttribute(i, attributes[i]);
+                }
+                
 
                 if ( i.toLowerCase() == 'class' ) {
                     el.className = attributes[i]; // for IE compatibility
