@@ -1,8 +1,11 @@
 var InfoBox = (function () {
+	var counter = 0;  /* to keep track of current slide */
+	
 	function InfoBox (config) {
 		this.content = config.content;
 		this.prevBtn = config.prevBtn;
-		this.nextBtn = config.nextBtn; 
+		this.nextBtn = config.nextBtn;
+		this.duration = config.duration;
 	}
 
 	InfoBox.prototype.create = function (el) {
@@ -92,20 +95,55 @@ var InfoBox = (function () {
 		buttonsPanel.appendChild(nextBtn);
 	};
 
-	InfoBox.prototype.getElemets = function (el) {
-		var target = helper.getEl(el),
-			elements = target.getElementsByTagName('li');
-			console.log(elements);
-		for (i in elements) {
-			console.log(elements[i].className);
-		}
+	InfoBox.prototype.showFisrtSlide = function(el) {
+		var target = helper.getEl(el);			 
+			slides = target.getElementsByClassName('slide'), /* a collection of all of the individual slides */
+			numSlides = slides.length;
+			
+			slides[0].classList.add('bss-show'); /* add 'bss-show' class to first figure so that the first slide is visible when the slideshow loads */
 	}
+
+	/*show current slide and hide the rest increment/decrement counter to keep track of our place in the slideshow */
+	InfoBox.prototype.showCurrent = function (el, n) { 		
+		var target = helper.getEl(el);			 
+			slides = target.getElementsByClassName('slide'), /* a collection of all of the individual slides */
+			numSlides = slides.length;
+		/* increment or decrement the counter variable depending on whether i is 1 or -1 */
+		if (n > 0) {
+        	counter = (counter + 1 === numSlides) ? 0 : counter + 1;
+    	} else {
+        	counter = (counter - 1 < 0) ? numSlides - 1 : counter - 1;
+    	}
+
+    	/* remove the show class ('bss-show') from whichever element currently has it [1] */ 
+	    [].forEach.call(slides, function (el) {
+	        el.classList.remove('bss-show');
+	    });
+	 
+	    /* add the show class ('bss-show') back to the one current slide that's supposed to have it */
+	    slides[counter].classList.add('bss-show');
+	};
+
+	InfoBox.prototype.addEvents = function (el) {
+		var self = this,
+			prevBtn = helper.getEl('#prevBtn', this.target),
+			nextBtn = helper.getEl('#nextBtn', this.target); 
+		helper.addEvent('click', prevBtn, function (el, n) {
+			self.showCurrent(self.target, -1);
+		});
+		helper.addEvent('click', nextBtn, function (el, n) {
+			self.showCurrent(self.target, 1);
+		});
+
+	};
+	
 
 	InfoBox.prototype.init = function (el) {
         var sliderContainer = helper.getEl(el);
         this.target = el;
         this.create(el);
-        this.getElemets(el) ;    
+        this.showFisrtSlide(el);
+        this.addEvents(el);  
        
     };
 	
