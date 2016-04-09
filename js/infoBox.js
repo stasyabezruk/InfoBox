@@ -105,7 +105,9 @@ var InfoBox = (function () {
 
 	/*show current slide and hide the rest increment/decrement counter to keep track of our place in the slideshow */
 	InfoBox.prototype.showCurrent = function (el, n) { 		
-		var target = helper.getEl(el);			 
+		var self = this,
+			target = helper.getEl(el),
+			viewport = target.querySelector('.viewport'),		 
 			slides = target.getElementsByClassName('slide'), /* a collection of all of the individual slides */
 			numSlides = slides.length;
 		/* increment or decrement the counter variable depending on whether i is 1 or -1 */
@@ -114,7 +116,7 @@ var InfoBox = (function () {
     	} else {
         	counter = (counter - 1 < 0) ? numSlides - 1 : counter - 1;
     	}
-
+    	
     	/* remove the show class ('bss-show') from whichever element currently has it [1] */ 
 	    [].forEach.call(slides, function (el) {
 	        el.classList.remove('bss-show');
@@ -122,16 +124,38 @@ var InfoBox = (function () {
 	 
 	    /* add the show class ('bss-show') back to the one current slide that's supposed to have it */
 	    slides[counter].classList.add('bss-show');
+	    self.fadeIn(viewport);
+	};
+
+	InfoBox.prototype.setOpacity = function (op, el) {
+		el.style.opacity = op.toString();
+  		el.style.MozOpacity = op.toString();
+  		el.style.KhtmlOpacity = op.toString();
+  		el.style.filter = 'alpha(opacity=' + (op * 100).toString() + ')';
+	};
+
+	
+	InfoBox.prototype.fadeIn = function (el) {
+		var i = 0,
+			self = this;			
+		for (i; i <= 1; i += 0.01) {
+		    (function(){
+				var myI = i;
+		    	window.setTimeout( function () {
+		    		self.setOpacity((myI), el)}, i * self.duration); 
+		    })();
+		}
 	};
 
 	InfoBox.prototype.addEvents = function (el) {
 		var self = this,
 			prevBtn = helper.getEl('#prevBtn', this.target),
-			nextBtn = helper.getEl('#nextBtn', this.target); 
+			nextBtn = helper.getEl('#nextBtn', this.target),
+			viewport = helper.getEl('.viewport', this.target);
 		helper.addEvent('click', prevBtn, function (el, n) {
 			self.showCurrent(self.target, -1);
 		});
-		helper.addEvent('click', nextBtn, function (el, n) {
+		helper.addEvent('click', nextBtn, function (el, n) {			
 			self.showCurrent(self.target, 1);
 		});
 

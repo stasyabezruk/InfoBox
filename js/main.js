@@ -41,7 +41,7 @@ var infoBox = new InfoBox({
 			"style" : "background: url('img/nextBtn.png') no-repeat"
 		}
 	], 
-	duration :300
+	duration : 700
 	
 });
 infoBox.init('.container');
