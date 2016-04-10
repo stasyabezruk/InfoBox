@@ -42,7 +42,7 @@ ul li {
 	display: none;
 	
 }
-.slide.bss-show { 	/*this is for the currently visible slide it's the only one that shows, with full opacity */
+.slide.currentSlide { 	/*this is for the currently visible slide it's the only one that shows, with full opacity */
 	display: block; 
 }
 .imgWrap {
@@ -65,26 +65,40 @@ ul li {
 }
 .slideContent {
 	padding: 10px;
+	position: relative;
 }
 .slideHeader {
 	color: #FD6E1E;
 	font-weight: bold;
 	font-size: 18px;
 }
+.slideContentBox {
+	height: 30px;
+	overflow: hidden;
+}
 .slideDescription {
 	font-size: 11px;
-    white-space: normal;
-    height: 28px;
+    white-space: normal;    
     overflow: hidden;
     color: #333;
     line-height: 14px;
     padding: 3px 11px 0px 3px;
+}
+.details {
+	font-size: 10px;
+	color: grey;
+	padding: 3px 11px 0px 3px;
+	display: none;
 }
 .detailsLink {
 	font-size: 11px;
 	text-decoration: underline;
 	color: #FD6E1E;
 	padding: 0 3px;
+}
+.detailsLink:hover {
+	color: #915736;
+	cursor: pointer;
 }
 .buttonsPanel {
 	padding: 0 10px;
@@ -100,6 +114,7 @@ ul li {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     cursor: pointer;
+    position: relative;
 }
 #prevBtn {
 	padding: 7px 0 0 33px;
@@ -107,4 +122,22 @@ ul li {
 #nextBtn {
 	padding: 7px 0 0 13px;
 	margin-left: 4px;
+}
+.control {
+	position: absolute;
+	width: 15px;
+	height: 10px;
+	top: 9px;
+}
+#prevArrow {	
+	left: 3px;
+}
+#nextArrow {
+	right: 3px;
+}
+.openedDetails .slideContent {
+	position: relative; 
+}
+.openedDetails .details {
+	display: block;
 }

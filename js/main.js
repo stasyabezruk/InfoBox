@@ -40,7 +40,17 @@ var infoBox = new InfoBox({
 			"text" :"Next",
 			"style" : "background: url('img/nextBtn.png') no-repeat"
 		}
-	], 
+	],
+	prevArrow : [
+		{
+			"style" : "background: url('img/leftArrow.png') no-repeat"
+		}
+	],
+	nextArrow : [
+		{
+			"style" : "background: url('img/rightArrow.png') no-repeat"
+		}
+	],
 	duration : 700
 	
 });
