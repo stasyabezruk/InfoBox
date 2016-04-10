@@ -4,6 +4,7 @@ var helper = {
         var context = document.querySelector(parent) || document;
         return context.querySelector(query);
     },
+
     create: function (name, attributes) {
         var el = document.createElement(name),
             val,
@@ -37,6 +38,7 @@ var helper = {
         
         return el;
     },
+
     addEvent: function (evnt, elem, func) {
        if (elem.addEventListener)
           elem.addEventListener(evnt,func,false);
@@ -46,5 +48,31 @@ var helper = {
        else {
           elem[evnt] = func;
        }
-   }
+    },
+
+    hasClass : function (elem, klass) {
+      return (' ' + elem.className + ' ').indexOf(' ' + klass + ' ') > -1;
+    },
+
+    removeClass : function (elem, klass) {
+      var classes = elem.className.split(' ');
+
+      for (var i = 0; i < classes.length; i++) {
+        if (classes[i] == klass) {
+          classes.splice(i, 1); // удалить класс
+          i--; 
+        }
+      }
+      elem.className = classes.join(' ');
+    },
+
+    addClass : function (elem, klass) {
+      var classes = elem.className ? elem.className.split(' ') : [];
+
+      for (var i = 0; i < classes.length; i++) {
+        if (classes[i] == klass) return; 
+      }
+      classes.push(klass);
+      elem.className = classes.join(' ');
+    }
 }

@@ -166,7 +166,6 @@ var InfoBox = (function () {
   		el.style.KhtmlOpacity = op.toString();
   		el.style.filter = 'alpha(opacity=' + (op * 100).toString() + ')';
 	};
-
 	InfoBox.prototype.fadeOut = function (el) {
 		var i = 0,
 			self = this;
@@ -177,8 +176,7 @@ var InfoBox = (function () {
 		    		self.setOpacity((1 - myI), el)}, i * self.duration); 
 		    })();	    
 		}
-	};
-	
+	};	
 	InfoBox.prototype.fadeIn = function (el) {
 		var i = 0,
 			self = this;			
@@ -190,48 +188,86 @@ var InfoBox = (function () {
 		    })();
 		}
 	};
-
-	InfoBox.prototype.moveToTop = function (el) {
+	
+	/*start - open details*/
+	InfoBox.prototype.moveToTop = function (el, link) {
 		el.style.top = parseInt(el.style.top) + (-10) + 'px';
-		
+
 		var self = this,
 			animate = window.setTimeout( function () {
 				self.moveToTop(el)
-			}, 30);			
-		
+			}, 30);	
 		if (el.offsetTop == 20) {			
 			window.clearTimeout(animate);
-			self.increaseHeight();
+			self.increaseHeight();			
 		}
-
 	};
-
 	InfoBox.prototype.increaseHeight = function () {
 		var self = this,
 			box = helper.getEl('.slideContentBox', this.target);
-		console.log(getComputedStyle(box).height);
 		box.style.height = parseInt(getComputedStyle(box).height) + 10 + 'px';
-
 
 		var animate = window.setTimeout( function () {
 				self.increaseHeight()
-			}, 30);	
-		
-		if(getComputedStyle(box).height == '200px') {
+			}, 30);			
+		if(getComputedStyle(box).height == '210px') {
 			window.clearTimeout(animate);
+			self.linkHide();
 		}
-
-	}
-
+	};
+	InfoBox.prototype.linkHide = function () {
+		var link = helper.getEl('.detailsLink', this.target);
+			helper.addClass(link, 'hideLink');			
+			link.innerHTML = 'hide details';
+	};
 	InfoBox.prototype.openDetails = function (link, viewport) {
 		var slideContent = helper.getEl('.slideContent', this.target),
 			imgWrap = helper.getEl('.imgWrap', this.target);
 		
-		this.fadeOut(imgWrap);		
-		viewport.className += ' openedDetails';
-		this.moveToTop(slideContent);		
+		this.fadeOut(imgWrap);
+		helper.addClass(viewport, 'openedDetails');
+		this.moveToTop(slideContent);	
+	};
+	/*end - open details*/
+
+	/*start - hide details*/
+	InfoBox.prototype.hideDetails = function (link, viewport) {
+		var slideContent = helper.getEl('.slideContent', this.target),
+			imgWrap = helper.getEl('.imgWrap', this.target);
+		helper.removeClass(link, 'hideLink');
+		link.innerHTML = 'show details';
+		this.moveToBottom(slideContent, link);
+		this.reduceHeight();
+		helper.removeClass(viewport, 'openedDetails');
+		this.fadeIn(imgWrap);
+	};
+	InfoBox.prototype.moveToBottom = function (el, link) {
+		el.style.top = parseInt(el.style.top) + 10 + 'px';
 		
-	}
+		var self = this,
+			animate = window.setTimeout( function () {
+				self.moveToBottom(el)
+			}, 30);			
+		
+		if (el.offsetTop == 200) {			
+			window.clearTimeout(animate);						
+		}
+	};
+	InfoBox.prototype.reduceHeight = function () {
+		var self = this,
+			box = helper.getEl('.slideContentBox', this.target);		
+		
+		box.style.height = parseInt(getComputedStyle(box).height) + (-10) + 'px';
+
+		var animate = window.setTimeout( function () {
+				self.reduceHeight()
+			}, 30);	
+		
+		if(getComputedStyle(box).height == '30px') {
+			window.clearTimeout(animate);
+		}
+	};
+	/*end - hide details*/
 
 	InfoBox.prototype.addEvents = function (el) {
 		var self = this,
@@ -248,9 +284,13 @@ var InfoBox = (function () {
 		});
 
 		helper.addEvent('click', detailsLink, function () {
-			self.openDetails(detailsLink, viewport);
-		})
-
+			if(helper.hasClass(detailsLink, 'hideLink')) {
+				self.hideDetails(detailsLink, viewport);
+			} else {				
+				self.openDetails(detailsLink, viewport);
+			}	
+		});
+		
 	};
 	
 
