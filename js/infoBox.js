@@ -280,16 +280,18 @@ var InfoBox = (function () {
 	InfoBox.prototype.addEvents = function (el) {
 		var self = this,
 			prevBtn = helper.getEl('#prevBtn', this.target),
-			nextBtn = helper.getEl('#nextBtn', this.target),
-			viewport = helper.getEl('.viewport', this.target),
-			detailsLinks =Array.prototype.slice.call(helper.getAll('.detailsLink', this.target));
+			nextBtns = Array.prototype.slice.call(helper.getAll('#nextBtn', this.target)),
+			detailsLinks = Array.prototype.slice.call(helper.getAll('.detailsLink', this.target));
 		
 		helper.addEvent('click', prevBtn, function () {
 			self.showCurrent(self.target, -1);
 		});
-		helper.addEvent('click', nextBtn, function () {			
-			self.showCurrent(self.target, 1);
-		});
+
+		nextBtns.forEach(function (item) {
+			helper.addEvent('click', item, function () {	
+				self.showCurrent(self.target, 1);
+			});
+		})
 
 		detailsLinks.forEach(function (item) {
 			var parent = item.parentNode.parentNode;
