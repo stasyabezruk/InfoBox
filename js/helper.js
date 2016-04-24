@@ -4,6 +4,10 @@ var helper = {
         var context = document.querySelector(parent) || document;
         return context.querySelector(query);
     },
+    getAll: function (query, parent) {
+        var context = document.querySelector(parent) || document;
+        return context.querySelectorAll(query);
+    },
 
     create: function (name, attributes) {
         var el = document.createElement(name),

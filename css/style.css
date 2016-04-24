@@ -5,12 +5,16 @@ body {
 	background: url('../img/comp_plate_graybasic.png') no-repeat;
 	width: 320px;
 	height: 340px;
-	position: absolute;
-	top: 50%;
-	margin-top: -170px;
+	padding: 5px 0;
+	position: absolute;	
 	left: 50%;
 	margin-left: -160px;
-	padding: 5px 0;
+}
+.box2 {	
+	top: 60%;	
+}
+.box {
+	top: 2%;	
 }
 * {
 	margin: 0;
